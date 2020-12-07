@@ -20,7 +20,7 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <CssBaseline />
       <Provider store={store}>
-        <App />
+        <App key={"app"} />
       </Provider>
   </ThemeProvider>,
   document.getElementById('root'),

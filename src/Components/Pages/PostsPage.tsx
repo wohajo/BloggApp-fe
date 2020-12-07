@@ -4,16 +4,16 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Navbar from '../Navbar/Navbar';
 import PostArea from '../PostArea/PostArea';
-import { Container, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const PostPage = () => {
     return (
     <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navbar />
-        <Container maxWidth="sm">
+        <Grid container justify = "center">
             <PostArea />
-        </Container>
+        </Grid>
     </ThemeProvider>
     )
 }

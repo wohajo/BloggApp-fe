@@ -8,6 +8,12 @@ const fetchPosts = () => axios.get(config.apiURL + "/posts")
     return res.data;
 })
 
+const deletePost = (postId: String) => axios.delete(config.apiURL + "posts/" + postId)
+    .then(res => {
+    return res.data;
+})
+
 export const PostsAPI = {
-    fetchPosts: fetchPosts
+    fetchPosts: fetchPosts,
+    deletePost: deletePost
 };

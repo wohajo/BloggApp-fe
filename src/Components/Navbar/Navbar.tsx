@@ -123,6 +123,27 @@ const Navbar = () => {
                     </Typography>
                 </ListItemText>
             </ListItem>
+            <ListItem button key={'Search comments'}>
+                <ListItemIcon>
+                    <DynamicFeedIcon />
+                    </ListItemIcon>
+                <ListItemText>
+                    <Typography >
+                        <MaterialLink to={'/'} underline="none" component={Link}>Search comments</MaterialLink>
+                    </Typography>
+                </ListItemText>
+            </ListItem>
+            <Divider/>
+            <ListItem button key={'Stats'}>
+                <ListItemIcon>
+                    <DynamicFeedIcon />
+                    </ListItemIcon>
+                <ListItemText>
+                    <Typography >
+                        <MaterialLink to={'/Stats'} underline="none" component={Link}>Statistics</MaterialLink>
+                    </Typography>
+                </ListItemText>
+            </ListItem>
         </List>
     </Drawer>
     </div>

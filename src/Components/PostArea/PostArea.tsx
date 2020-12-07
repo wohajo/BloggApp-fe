@@ -1,4 +1,4 @@
-import { CircularProgress, Container, makeStyles, Paper, Typography } from '@material-ui/core';
+import { CircularProgress, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
@@ -34,7 +34,7 @@ const PostArea = () => {
         } else if (posts.length === 0) {
             return <Typography className={classes.noPosts}>No posts to show.</Typography>
         } else {
-            return posts.map(post => <Post id={post.id} authors={post.authors} tags={post.tags} contents={post.contents} />)
+            return posts.map(post => <Post key={"post" + post.id} id={post.id} authors={post.authors} tags={post.tags} contents={post.contents} />)
         }
     }
 
@@ -43,7 +43,6 @@ const PostArea = () => {
         .fetchPosts()
         .then((data) =>
             {
-                console.log(data)
                 dispatch(setPosts(data))
                 dispatch(profilePostsLoaded())
             })
@@ -62,9 +61,9 @@ const PostArea = () => {
             ? <div className={classes.spinnerWrapper}>
                 <CircularProgress color="secondary" />
             </div>
-            :<Container maxWidth="sm">
+            :<Grid container justify = "center">
                 {showPosts()}
-            </Container>}
+            </Grid>}
         </Paper>
     )
 }

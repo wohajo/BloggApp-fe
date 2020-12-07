@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import { Chip } from '@material-ui/core';
 import { postInterface } from '../../Interfaces/interfaces';
 import theme from '../../theme';
+import { PostsAPI } from '../../API/PostsAPI';
+import { useDispatch } from 'react-redux';
+import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
 
 const useStyles = makeStyles({
     root: {
@@ -34,13 +37,31 @@ const useStyles = makeStyles({
     dangerousButton: {
         color: theme.palette.secondary.dark,
     },
+    chip: {
+        backgroundColor: theme.palette.secondary.light,
+        color: theme.palette.secondary.contrastText,
+        marginRight: 5
+    }
 });
 
 const Post = (props: postInterface) => {
+    
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const handleDelete = () => {
+        PostsAPI.deletePost(props.id)
+        dispatch(profilePostsNotLoaded())
+        PostsAPI
+        .fetchPosts()
+        .then((data) => {
+            dispatch(setPosts(data))
+            dispatch(profilePostsLoaded())
+        })
+    }
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} variant="outlined">
             <CardContent>
                 <div>
                     {props.authors.map(author => <span className={classes.authorText}> | {author}</span>)}
@@ -50,11 +71,11 @@ const Post = (props: postInterface) => {
             </Typography>
         </CardContent>
         <div className={classes.tagsArea}>
-            {props.tags.map(tag => <Chip label={tag} />)}
+            {props.tags.map(tag => <Chip label={tag} className={classes.chip} />)}
         </div>
         <CardActions>
             <Button size="small" variant="contained" className={classes.button}>Comment</Button>
-            <Button size="small" variant="contained" className={classes.dangerousButton}>Delete</Button>
+            <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
         </CardActions>
     </Card>
     );
