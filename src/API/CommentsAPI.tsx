@@ -19,9 +19,9 @@ const headerJsonConfiguration = () => {
     }
 }
 
-const fetchComments = () => axios.get(config.apiURL + "/comments")
+const fetchComments = () => axios.get(config.apiURL + "comments")
     .then(res => {
-    return res.data.entities;
+    return res.data;
 })
 
 const fetchCommentByCommentId = (commentId: number) => axios.get(config.apiURL + "comments/" + commentId)
@@ -56,14 +56,10 @@ const putComentInPost = (comment: commentInterface) => {
     })
 }
 
-const deleteComent = (commentId: number) => {
-    axios.post(
-        config.apiURL + "/comments/" + commentId, 
-        )
+const deleteComent = (commentId: String) => axios.delete(config.apiURL + "comments/" + commentId)
     .then(res => {
     return res.data;
-    })
-}
+})
 
 export const CommentsAPI = {
     fetchComments: fetchComments,

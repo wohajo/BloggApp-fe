@@ -16,4 +16,5 @@ export interface rootState {
     comments: Array<commentInterface>; 
     posts: Array<postInterface>;
     postsSpinner: Boolean;
+    pageCommentsSpinnner: Boolean;
 } 

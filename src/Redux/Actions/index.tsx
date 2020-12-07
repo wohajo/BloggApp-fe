@@ -48,3 +48,19 @@ export const profilePostsNotLoaded = () => {
         payload: true
     }
 }
+
+// comments spinner
+
+export const pageCommentsLoaded = () => {
+    return {
+        type: 'PAGE_COMMENTS_LOADED',
+        payload: false
+    }
+}
+
+export const pageCommentsNotLoaded = () => {
+    return {
+        type: 'PAGE_COMMENTS_NOT_LOADED',
+        payload: true
+    }
+}

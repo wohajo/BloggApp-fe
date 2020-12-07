@@ -50,14 +50,14 @@ const Post = (props: postInterface) => {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        PostsAPI.deletePost(props.id)
         dispatch(profilePostsNotLoaded())
+        PostsAPI.deletePost(props.id)
         PostsAPI
         .fetchPosts()
         .then((data) => {
             dispatch(setPosts(data))
-            dispatch(profilePostsLoaded())
         })
+        dispatch(profilePostsLoaded())
     }
 
     return (

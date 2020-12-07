@@ -129,7 +129,7 @@ const Navbar = () => {
                     </ListItemIcon>
                 <ListItemText>
                     <Typography >
-                        <MaterialLink to={'/'} underline="none" component={Link}>Search comments</MaterialLink>
+                        <MaterialLink to={'/Comments'} underline="none" component={Link}>Search comments</MaterialLink>
                     </Typography>
                 </ListItemText>
             </ListItem>
