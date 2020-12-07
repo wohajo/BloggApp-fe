@@ -31,15 +31,17 @@ const Post = (props: commentInterface) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const handleDelete = () => {
-        CommentsAPI.deleteComent(props.id)
+    const handleDelete = async () => {
         dispatch((pageCommentsNotLoaded()))
+        await CommentsAPI.deleteComent(props.id)
         CommentsAPI
         .fetchComments()
         .then((data) => {
             dispatch(setComments(data))
         })
-        dispatch((pageCommentsLoaded()))
+        .finally(async () => {
+            await dispatch(pageCommentsLoaded())
+        })
     }
 
     return (

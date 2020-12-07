@@ -43,7 +43,6 @@ const CommentsArea = () => {
         .fetchComments()
         .then((data) =>
             {
-                console.log(data)
                 dispatch(setComments(data))
                 dispatch(pageCommentsLoaded())
             })

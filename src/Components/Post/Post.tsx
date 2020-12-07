@@ -49,15 +49,17 @@ const Post = (props: postInterface) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         dispatch(profilePostsNotLoaded())
-        PostsAPI.deletePost(props.id)
+        await PostsAPI.deletePost(props.id)
         PostsAPI
         .fetchPosts()
         .then((data) => {
             dispatch(setPosts(data))
         })
-        dispatch(profilePostsLoaded())
+        .finally(async () => {
+            await dispatch(profilePostsLoaded())
+        })
     }
 
     return (
