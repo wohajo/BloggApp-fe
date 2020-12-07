@@ -1,158 +1,132 @@
 import React from 'react';
+import clsx from 'clsx';
+import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import { Link as MaterialLink } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import HomeIcon from '@material-ui/icons/Home';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import { Link as MaterialLink } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme: Theme) =>
-createStyles({
-    root: {
-        display: 'flex',
+const useStyles = makeStyles((theme:Theme) => ({
+root: {
+        flexGrow: 1,
     },
-    drawer: {
-        [theme.breakpoints.up('sm')]: {
-        width: drawerWidth,
-        flexShrink: 0,
-        },
+        menuButton: {
+        marginRight: theme.spacing(2),
+    },
+        title: {
+        flexGrow: 1,
     },
     appBar: {
-        [theme.breakpoints.up('sm')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-        },
+        transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
-        [theme.breakpoints.up('sm')]: {
+        appBarShift: {
+        width: `calc(100%-275px)`,
+        transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+    }),
+    },
+        drawer: {
+        width: '275px',
+        flexShrink: 0,
+    },
+        drawerPaper: {
+        width: '275px',
+    },
+        hide: {
         display: 'none',
     },
+        drawerHeader: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
     },
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-        width: drawerWidth,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-    },
-}),
-);
+        link: {
+        underline: 'none',
+        color: 'inherit'
+    }
+}));
 
-interface Props {
-    window?: () => Window;
-}
-
-export default function ResponsiveDrawer(props: Props) {
-    const { window } = props;
+const Navbar = () => {
     const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
     const theme = useTheme();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
 
-    const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-};
-
-const drawer = (
-    <div>
-        <div className={classes.toolbar} />
-        <Divider />
-        <List>
-            <ListItem>
-                <Typography color="secondary">
-                    <MaterialLink to={'/'} color="secondary" underline="none" component={Link}>Main Page</MaterialLink>
-                </Typography>
-            </ListItem>
-        </List>
-        <Divider />
-        <List>
-            <ListItem>
-                <Typography color="secondary">
-                    <MaterialLink to={'/Posts'} color="secondary" underline="none" component={Link}>Posts</MaterialLink>
-                </Typography>
-            </ListItem>
-        </List>
-    </div>
-);
-
-    const container = window !== undefined ? () => window().document.body : undefined;
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     return (
     <div className={classes.root}>
-    <CssBaseline />
-    <AppBar position="fixed" className={classes.appBar}>
+        <AppBar color="primary"position="static" className={clsx(classes.appBar, {
+                [classes.appBarShift]: open,
+            })}>
         <Toolbar>
-            <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-            >
-            <MenuIcon />
+            <IconButton edge="start" className={clsx(classes.menuButton, open && classes.hide)} aria-label="open-drawer" onClick={handleDrawerOpen}>
+                <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap>
-            Responsive drawer
-            </Typography>
         </Toolbar>
         </AppBar>
-        <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-            <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-                paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            >
-            {drawer}
-        </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-            <Drawer
-            classes={{
-                paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-            >
-            {drawer}
-            </Drawer>
-        </Hidden>
-        </nav>
-        <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-            ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-            facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-            gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-            donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-            adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-            Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-            imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-            arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-        </Typography>
-        </main>
+        <Drawer 
+        className={classes.drawer} 
+        variant="temporary"
+        onEscapeKeyDown={handleDrawerClose}
+        onBackdropClick={handleDrawerClose} 
+        anchor="left" 
+        open={open} 
+        classes={{paper: classes.drawerPaper,}}>
+        <div className={classes.drawerHeader}>
+            <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'ltr' ? <ChevronLeftIcon color="secondary"  /> : <ChevronRightIcon color="secondary" />}
+            </IconButton>
+        </div>
+        <Divider />
+        <List>
+            <ListItem button key={'MainPage'}>
+                <ListItemIcon>
+                    <HomeIcon />
+                    </ListItemIcon>
+                <ListItemText>
+                    <Typography >
+                        <MaterialLink to={'/'} underline="none" component={Link}>Main page</MaterialLink>
+                    </Typography>
+                </ListItemText>
+            </ListItem>
+            <ListItem button key={'Posts'}>
+                <ListItemIcon>
+                    <DynamicFeedIcon />
+                    </ListItemIcon>
+                <ListItemText>
+                    <Typography >
+                        <MaterialLink to={'/Posts'} underline="none" component={Link}>Posts</MaterialLink>
+                    </Typography>
+                </ListItemText>
+            </ListItem>
+        </List>
+    </Drawer>
     </div>
-    );
+);
 }
+
+export default Navbar;
