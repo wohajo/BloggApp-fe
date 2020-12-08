@@ -11,6 +11,7 @@ import theme from '../../theme';
 import { PostsAPI } from '../../API/PostsAPI';
 import { useDispatch } from 'react-redux';
 import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
+import CommentsDialog from '../CommentsDialog/CommentsDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -76,7 +77,7 @@ const Post = (props: postInterface) => {
             {props.tags.map(tag => <Chip label={tag} className={classes.chip} />)}
         </div>
         <CardActions>
-            <Button size="small" variant="contained" className={classes.button}>Comment</Button>
+            <CommentsDialog postId={props.id}/>
             <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
         </CardActions>
     </Card>

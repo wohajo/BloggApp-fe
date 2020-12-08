@@ -7,8 +7,8 @@ export interface commentInterface {
 
 export interface postInterface {
     id: string;
-    authors: Array<String>;
-    tags: Array<String>;
+    authors: Array<string>;
+    tags: Array<string>;
     contents: string;
 }
 
@@ -18,3 +18,7 @@ export interface rootState {
     postsSpinner: Boolean;
     pageCommentsSpinnner: Boolean;
 } 
+
+export interface postIdProp {
+    postId: string;
+}
