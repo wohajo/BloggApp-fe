@@ -1,4 +1,4 @@
-const setPostsSpinnerReducer = (state = true, action: any) => {
+const setPagePostsSpinnerReducer = (state = true, action: any) => {
     switch(action.type) {
         case 'POSTS_LOADED':
             return false;
@@ -9,4 +9,4 @@ const setPostsSpinnerReducer = (state = true, action: any) => {
     }
 };
 
-export default setPostsSpinnerReducer
+export default setPagePostsSpinnerReducer

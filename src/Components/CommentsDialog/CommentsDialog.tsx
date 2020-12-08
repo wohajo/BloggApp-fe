@@ -3,27 +3,43 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles, TextField } from '@material-ui/core';
+import { CircularProgress, Grid, makeStyles, TextField, Typography } from '@material-ui/core';
 import theme from '../../theme';
-import { postIdProp } from '../../Interfaces/interfaces';
+import { postIdProp, rootState } from '../../Interfaces/interfaces';
 import { CommentsAPI } from '../../API/CommentsAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import Comment from '../Comment/Comment';
+import { postCommentsLoaded, setPostComments } from '../../Redux/Actions';
+
 
 const useStyles = makeStyles({
     button: {
         color: theme.palette.secondary.contrastText,
         backgroundColor: theme.palette.secondary.main
     },
+    commentField: {
+        marginLeft: 15,
+        marginRight: 15,
+    }
 });
 
 const CommentsDialog = (props: postIdProp) => {
     const [open, setOpen] = React.useState(false);
     const [commentValue, setCommentValue] = React.useState("");
+    const comments = useSelector((state: rootState) => state.postComments);
+    const isSpinnerVisible = useSelector((state: rootState) => state.postCommentsSpinner)
 
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const handleClickOpen = () => () => {
+        CommentsAPI
+        .fetchCommentsByPostId(props.postId)
+        .then((data) => {
+            dispatch(setPostComments(data))
+            dispatch(postCommentsLoaded())
+        })
         setOpen(true);
     };
 
@@ -34,6 +50,16 @@ const CommentsDialog = (props: postIdProp) => {
     const handleComment = () => {
         CommentsAPI.postComentInPost({id: "", contents: commentValue, postId: props.postId, username: "testUser"})
     };
+
+    const showComments = () => {
+        if (comments.length === 0) {
+            return (<div>
+                <Typography>No comments, be first!</Typography>
+            </div>)
+        } else {
+            return comments.map(comment => <Comment key={"comment" + comment.id} id={comment.id} postId={comment.postId} username={comment.username} contents={comment.contents}/>)
+        }
+    }
 
 return (
     <div>
@@ -49,27 +75,27 @@ return (
         >
         <DialogTitle id="scroll-dialog-title">Comments</DialogTitle>
         <DialogContent>
-            <DialogContentText
-                id="scroll-dialog-description"
-                tabIndex={-1}
-            >{"lorem ipsum"}
-            </DialogContentText>
-            <TextField
-                        autoFocus
+            <Grid container justify = "center">
+                {isSpinnerVisible
+                ? <CircularProgress color="secondary"/>
+                : showComments()
+                }
+            </Grid>
+        </DialogContent>
+        <TextField
                         margin="dense"
                         id="comment-textfield"
                         label="Write your comment"
                         type="text"
                         multiline
                         rows={3}
-                        fullWidth
                         color="secondary"
+                        className={classes.commentField}
                         value={commentValue}
                         onChange={(e) => {
                             setCommentValue(e.target.value)
                         }}
                     />
-        </DialogContent>
         <DialogActions>
             <Button onClick={handleComment} color="primary">
                 Comment

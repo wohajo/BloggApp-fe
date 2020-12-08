@@ -24,14 +24,14 @@ const fetchComments = () => axios.get(config.apiURL + "comments")
     return res.data;
 })
 
-const fetchCommentByCommentId = (commentId: number) => axios.get(config.apiURL + "comments/" + commentId)
+const fetchCommentByCommentId = (commentId: String) => axios.get(config.apiURL + "comments/" + commentId)
     .then(res => {
     return res.data;
 })
 
-const fetchCommentsByPostId = (postId: number) => axios.get(config.apiURL + "post/" + postId + "/comments")
+const fetchCommentsByPostId = (postId: String) => axios.get(config.apiURL + "post/" + postId + "/comments")
     .then(res => {
-    return res.data.entities;
+    return res.data;
 })
 
 const postComentInPost = (comment: commentInterface) => {

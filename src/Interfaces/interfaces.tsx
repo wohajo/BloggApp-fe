@@ -13,10 +13,12 @@ export interface postInterface {
 }
 
 export interface rootState {
-    comments: Array<commentInterface>; 
     posts: Array<postInterface>;
     postsSpinner: Boolean;
+    comments: Array<commentInterface>; 
     pageCommentsSpinnner: Boolean;
+    postComments: Array<commentInterface>; 
+    postCommentsSpinner: Boolean;
 } 
 
 export interface postIdProp {

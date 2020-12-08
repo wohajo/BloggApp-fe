@@ -33,6 +33,22 @@ export const resetComments = () => {
     }
 }
 
+// post comments
+
+export const setPostComments = (comments: Array<commentInterface>) => {
+    return {
+        type: 'SET_POST_COMMENTS',
+        payload: comments
+    }
+}
+
+export const resetPostComments = () => {
+    return {
+        type: 'RESET_POST_COMMENTS',
+        payload: null
+    }
+}
+
 // posts spinner
 
 export const profilePostsLoaded = () => {
@@ -61,6 +77,22 @@ export const pageCommentsLoaded = () => {
 export const pageCommentsNotLoaded = () => {
     return {
         type: 'PAGE_COMMENTS_NOT_LOADED',
+        payload: true
+    }
+}
+
+// post comments spinner
+
+export const postCommentsLoaded = () => {
+    return {
+        type: 'POST_COMMENTS_LOADED',
+        payload: false
+    }
+}
+
+export const postCommentsNotLoaded = () => {
+    return {
+        type: 'POST_COMMENTS_NOT_LOADED',
         payload: true
     }
 }
