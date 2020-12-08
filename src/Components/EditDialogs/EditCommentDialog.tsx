@@ -6,10 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, TextField } from '@material-ui/core';
 import theme from '../../theme';
-import { commentInterface } from '../../Interfaces/interfaces';
+import { commentInterface, commentInterfaceWithIsInDialog } from '../../Interfaces/interfaces';
 import { useDispatch } from 'react-redux';
 import { CommentsAPI } from '../../API/CommentsAPI';
-import { setPostComments } from '../../Redux/Actions';
+import { setComments, setPostComments } from '../../Redux/Actions';
 
 const useStyles = makeStyles({
     button: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     }
 });
 
-const EditCommentDialog = (props: commentInterface) => {
+const EditCommentDialog = (props: commentInterfaceWithIsInDialog) => {
 
     const [open, setOpen] = React.useState(false);
     const [commentContentsValue, setCommentContentsValue] = React.useState(props.contents);
@@ -41,14 +41,25 @@ const EditCommentDialog = (props: commentInterface) => {
     };
 
     const handleSendEditedComment = async () => {
-        CommentsAPI
-        .putComentInPost({id: props.id, contents: commentContentsValue, postId: props.postId, username: usernameValue})
-        CommentsAPI
-        .fetchCommentsByPostId(props.postId)
-        .then((data) => {
-            dispatch(setPostComments(data))
-        })
-        setOpen(false)
+        if (props.isInDialog) {
+            CommentsAPI
+            .putComentInPost({id: props.id, contents: commentContentsValue, postId: props.postId, username: usernameValue})
+            CommentsAPI
+            .fetchCommentsByPostId(props.postId)
+            .then((data) => {
+                dispatch(setPostComments(data))
+            })
+            setOpen(false)
+        } else {
+            CommentsAPI
+            .putComentInPost({id: props.id, contents: commentContentsValue, postId: props.postId, username: usernameValue})
+            CommentsAPI
+            .fetchCommentsByUsername(props.username)
+            .then((data) => {
+                dispatch(setComments(data))
+            })
+            setOpen(false)
+        }
     };
 
 return (

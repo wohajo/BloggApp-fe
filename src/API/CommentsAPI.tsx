@@ -34,6 +34,11 @@ const fetchCommentsByPostId = (postId: String) => axios.get(config.apiURL + "pos
     return res.data;
 })
 
+const fetchCommentsByUsername = (username: String) => axios.get(config.apiURL + "comments/user/" + username)
+    .then(res => {
+    return res.data;
+})
+
 const postComentInPost = (comment: commentInterface) => {
     axios.post(
         config.apiURL + "/comments", 
@@ -67,5 +72,6 @@ export const CommentsAPI = {
     fetchCommentByCommentId: fetchCommentByCommentId,
     postComentInPost: postComentInPost,
     putComentInPost: putComentInPost,
-    deleteComent: deleteComent
+    deleteComent: deleteComent,
+    fetchCommentsByUsername: fetchCommentsByUsername
 };

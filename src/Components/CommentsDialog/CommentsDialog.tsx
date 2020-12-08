@@ -51,15 +51,13 @@ const CommentsDialog = (props: postIdProp) => {
 
     const handleComment = async () => {
         dispatch(postCommentsNotLoaded())
-        await CommentsAPI
+        CommentsAPI
         .postComentInPost({id: "", contents: commentValue, postId: props.postId, username: usernameValue})
         CommentsAPI
         .fetchCommentsByPostId(props.postId)
-        .then((data) => {
-            dispatch(setPostComments(data))
-        })
-        .finally(async () => {
-            await dispatch(postCommentsLoaded())
+        .then(async (data) => {
+            await dispatch(setPostComments(data))
+            dispatch(postCommentsLoaded())
         })
     };
 
@@ -69,7 +67,7 @@ const CommentsDialog = (props: postIdProp) => {
                 <Typography>No comments, be first!</Typography>
             </div>)
         } else {
-            return comments.map(comment => <Comment key={"comment" + comment.id} id={comment.id} postId={comment.postId} username={comment.username} contents={comment.contents}/>)
+            return comments.map(comment => <Comment isInDialog={true} key={"comment" + comment.id} id={comment.id} postId={comment.postId} username={comment.username} contents={comment.contents}/>)
         }
     }
 

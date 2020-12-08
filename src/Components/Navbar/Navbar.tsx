@@ -16,6 +16,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import SearchIcon from '@material-ui/icons/Search';
+import BarChartIcon from '@material-ui/icons/BarChart';
 import { Link as MaterialLink } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -125,7 +127,7 @@ const Navbar = () => {
             </ListItem>
             <ListItem button key={'Search comments'}>
                 <ListItemIcon>
-                    <DynamicFeedIcon />
+                    <SearchIcon />
                     </ListItemIcon>
                 <ListItemText>
                     <Typography >
@@ -136,7 +138,7 @@ const Navbar = () => {
             <Divider/>
             <ListItem button key={'Stats'}>
                 <ListItemIcon>
-                    <DynamicFeedIcon />
+                    <BarChartIcon />
                     </ListItemIcon>
                 <ListItemText>
                     <Typography >

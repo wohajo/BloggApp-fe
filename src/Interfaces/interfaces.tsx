@@ -5,6 +5,15 @@ export interface commentInterface {
     contents: string;
 }
 
+export interface commentInterfaceWithIsInDialog {
+    id: string;
+    username: string;
+    postId: string;
+    contents: string;
+    isInDialog: Boolean;
+}
+
+
 export interface postInterface {
     id: string;
     authors: Array<string>;
