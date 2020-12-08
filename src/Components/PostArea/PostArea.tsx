@@ -30,7 +30,9 @@ const useStyles = makeStyles({
 const PostArea = () => {
 
     const dispatch = useDispatch();
-    const [postValue, setPostValue] = React.useState("");
+    const [contentsValue, setContentsValue] = React.useState("");
+    const [authorsValue, setAuthorsValue] = React.useState([""]);
+    const [tagsValue, setTagsValue] = React.useState([""]);
 
     const posts = useSelector((state: rootState) => state.posts);
     const isSpinnerVisible = useSelector((state: rootState) => state.postsSpinner)
@@ -48,7 +50,7 @@ const PostArea = () => {
     const handleAddPost = async () => {
         dispatch(profilePostsNotLoaded())
         await PostsAPI
-        .postPost({id: "", contents: postValue, authors: ["asdsad", "Dasd"], tags: ["tag1", "tag2"]})
+        .postPost({id: "", contents: contentsValue, authors: authorsValue, tags: tagsValue})
         PostsAPI
         .fetchPosts()
         .then((data) => {
@@ -82,9 +84,9 @@ const PostArea = () => {
             ? <div className={classes.spinnerWrapper}>
             </div>
             :<Grid container className={classes.postingWrapper} justify="flex-start">
-                            <TextField
+                <TextField
                         margin="dense"
-                        id="comment-textfield"
+                        id="contents-textfield"
                         label="Post here!"
                         type="text"
                         multiline
@@ -92,9 +94,39 @@ const PostArea = () => {
                         fullWidth
                         color="secondary"
                         className={classes.commentField}
-                        value={postValue}
+                        value={contentsValue}
                         onChange={(e) => {
-                            setPostValue(e.target.value)
+                            setContentsValue(e.target.value)
+                        }}
+                    />
+                <TextField
+                        margin="dense"
+                        id="authors-textfield"
+                        label="Authors go here!"
+                        type="text"
+                        multiline
+                        rows={1}
+                        fullWidth
+                        color="secondary"
+                        className={classes.commentField}
+                        value={authorsValue}
+                        onChange={(e) => {
+                            setAuthorsValue(e.target.value.split(","))
+                        }}
+                    />
+                <TextField
+                        margin="dense"
+                        id="tags-textfield"
+                        label="Tag here!"
+                        type="text"
+                        multiline
+                        rows={1}
+                        fullWidth
+                        color="secondary"
+                        className={classes.commentField}
+                        value={tagsValue}
+                        onChange={(e) => {
+                            setTagsValue(e.target.value.split(","))
                         }}
                     />
                 <Button variant="outlined" color="secondary" onClick={() => {handleAddPost()}}>Post!</Button>

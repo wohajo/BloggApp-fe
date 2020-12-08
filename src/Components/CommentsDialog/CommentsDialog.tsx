@@ -28,6 +28,7 @@ const useStyles = makeStyles({
 const CommentsDialog = (props: postIdProp) => {
     const [open, setOpen] = React.useState(false);
     const [commentValue, setCommentValue] = React.useState("");
+    const [usernameValue, setUsernameValue] = React.useState("");
     const comments = useSelector((state: rootState) => state.postComments);
     const isSpinnerVisible = useSelector((state: rootState) => state.postCommentsSpinner)
 
@@ -51,7 +52,7 @@ const CommentsDialog = (props: postIdProp) => {
     const handleComment = async () => {
         dispatch(postCommentsNotLoaded())
         await CommentsAPI
-        .postComentInPost({id: "", contents: commentValue, postId: props.postId, username: "testUser"})
+        .postComentInPost({id: "", contents: commentValue, postId: props.postId, username: usernameValue})
         CommentsAPI
         .fetchCommentsByPostId(props.postId)
         .then((data) => {
@@ -93,20 +94,34 @@ return (
                 }
             </Grid>
         </DialogContent>
-        <TextField
-                        margin="dense"
-                        id="comment-textfield"
-                        label="Write your comment"
-                        type="text"
-                        multiline
-                        rows={3}
-                        color="secondary"
-                        className={classes.commentField}
-                        value={commentValue}
-                        onChange={(e) => {
-                            setCommentValue(e.target.value)
-                        }}
-                    />
+            <TextField
+                margin="dense"
+                id="comment-textfield"
+                label="Write your comment"
+                type="text"
+                multiline
+                rows={3}
+                color="secondary"
+                className={classes.commentField}
+                value={commentValue}
+                onChange={(e) => {
+                    setCommentValue(e.target.value)
+                }}
+            />
+            <TextField
+                margin="dense"
+                id="username-textfield"
+                label="Username"
+                type="text"
+                multiline
+                rows={1}
+                color="secondary"
+                className={classes.commentField}
+                value={usernameValue}
+                onChange={(e) => {
+                    setUsernameValue(e.target.value)
+                }}
+            />
         <DialogActions>
             <Button onClick={handleComment} color="primary">
                 Comment

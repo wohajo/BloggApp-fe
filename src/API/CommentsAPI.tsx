@@ -46,7 +46,7 @@ const postComentInPost = (comment: commentInterface) => {
 }
 
 const putComentInPost = (comment: commentInterface) => {
-    axios.post(
+    axios.put(
         config.apiURL + "/comments", 
         jsonify(comment), 
         headerJsonConfiguration()

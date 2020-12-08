@@ -10,6 +10,7 @@ import theme from '../../theme';
 import { useDispatch } from 'react-redux';
 import { CommentsAPI } from '../../API/CommentsAPI';
 import { pageCommentsNotLoaded, setComments, pageCommentsLoaded } from '../../Redux/Actions';
+import EditCommentDialog from '../EditDialogs/EditCommentDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -55,6 +56,7 @@ const Post = (props: commentInterface) => {
             </Typography>
         </CardContent>
         <CardActions>
+            <EditCommentDialog id={props.id} postId={props.postId} contents={props.contents} username={props.username} />
             <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
         </CardActions>
     </Card>
