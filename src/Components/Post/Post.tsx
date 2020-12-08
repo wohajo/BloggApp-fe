@@ -12,6 +12,7 @@ import { PostsAPI } from '../../API/PostsAPI';
 import { useDispatch } from 'react-redux';
 import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
 import CommentsDialog from '../CommentsDialog/CommentsDialog';
+import EditPostDialog from '../EditDialogs/EditPostDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -67,17 +68,18 @@ const Post = (props: postInterface) => {
         <Card className={classes.root} variant="outlined">
             <CardContent>
                 <div>
-                    {props.authors.map(author => <span className={classes.authorText}> | {author}</span>)}
+                    {props.authors.map(author => <span key={author} className={classes.authorText}> | {author}</span>)}
                 </div>
             <Typography variant="body2" component="p">
                 {props.contents}
             </Typography>
         </CardContent>
         <div className={classes.tagsArea}>
-            {props.tags.map(tag => <Chip label={tag} className={classes.chip} />)}
+            {props.tags.map(tag => <Chip label={tag} key={tag} className={classes.chip} />)}
         </div>
         <CardActions>
             <CommentsDialog postId={props.id}/>
+            <EditPostDialog id={props.id} authors={props.authors} contents={props.contents} tags={props.tags}/>
             <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
         </CardActions>
     </Card>

@@ -64,7 +64,6 @@ const PostArea = () => {
         .fetchPosts()
         .then((data) =>
             {
-                console.log(data)
                 dispatch(setPosts(data))
                 dispatch(profilePostsLoaded())
             })
