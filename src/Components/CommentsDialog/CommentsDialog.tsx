@@ -10,7 +10,7 @@ import { postIdProp, rootState } from '../../Interfaces/interfaces';
 import { CommentsAPI } from '../../API/CommentsAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import Comment from '../Comment/Comment';
-import { postCommentsLoaded, setPostComments } from '../../Redux/Actions';
+import { postCommentsLoaded, postCommentsNotLoaded, setPostComments } from '../../Redux/Actions';
 
 
 const useStyles = makeStyles({
@@ -21,6 +21,7 @@ const useStyles = makeStyles({
     commentField: {
         marginLeft: 15,
         marginRight: 15,
+        minWidth: "80%"
     }
 });
 
@@ -47,8 +48,18 @@ const CommentsDialog = (props: postIdProp) => {
         setOpen(false);
     };
 
-    const handleComment = () => {
-        CommentsAPI.postComentInPost({id: "", contents: commentValue, postId: props.postId, username: "testUser"})
+    const handleComment = async () => {
+        dispatch(postCommentsNotLoaded())
+        await CommentsAPI
+        .postComentInPost({id: "", contents: commentValue, postId: props.postId, username: "testUser"})
+        CommentsAPI
+        .fetchCommentsByPostId(props.postId)
+        .then((data) => {
+            dispatch(setPostComments(data))
+        })
+        .finally(async () => {
+            await dispatch(postCommentsLoaded())
+        })
     };
 
     const showComments = () => {
