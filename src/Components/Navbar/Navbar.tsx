@@ -135,6 +135,16 @@ const Navbar = () => {
                     </Typography>
                 </ListItemText>
             </ListItem>
+            <ListItem button key={'Search posts'}>
+                <ListItemIcon>
+                    <SearchIcon />
+                    </ListItemIcon>
+                <ListItemText>
+                    <Typography >
+                        <MaterialLink to={'/SearchPosts'} underline="none" component={Link}>Search posts</MaterialLink>
+                    </Typography>
+                </ListItemText>
+            </ListItem>
             <Divider/>
             <ListItem button key={'Stats'}>
                 <ListItemIcon>

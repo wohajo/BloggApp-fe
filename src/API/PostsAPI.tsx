@@ -51,9 +51,25 @@ const deletePost = (postId: String) => axios.delete(config.apiURL + "posts/" + p
     return res.data;
 })
 
+const fetchPostsBySearchPaginated = (
+    number: number, 
+    givenAuthor: String, 
+    givenTag: String, 
+    givenContents: String) => axios.get(config.apiURL + "posts/find/page/" + number, {
+    params: {
+        author: givenAuthor,
+        tag: givenTag,
+        contents: givenContents
+    }
+})
+    .then(res => {
+    return res.data;
+})
+
 export const PostsAPI = {
     fetchPosts: fetchPosts,
     deletePost: deletePost,
     postPost: postPost,
-    updatePost: updatePost
+    updatePost: updatePost,
+    fetchPostsBySearchPaginated: fetchPostsBySearchPaginated
 };

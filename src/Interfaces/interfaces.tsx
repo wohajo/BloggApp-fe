@@ -28,6 +28,8 @@ export interface rootState {
     pageCommentsSpinnner: Boolean;
     postComments: Array<commentInterface>; 
     postCommentsSpinner: Boolean;
+    searchedPosts: Array<postInterface>;
+    searchedPostsSpinner: Boolean;
 } 
 
 export interface postIdProp {

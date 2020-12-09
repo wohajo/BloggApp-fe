@@ -1,10 +1,12 @@
-import setCommentsReducer from "./setCommentsReducer";
-import setPostsReducer from "./setPostsReducer";
 import {combineReducers} from 'redux';
-import setPagePostsSpinnerReducer from "./setPagePostsSpinnerReducer";
-import setPageCommentsSpinnerReducer from "./setPageCommentsSpinnerReducer"
-import setCommentsInPostReducer from "./setCommentsInPostReducer";
-import setPostCommentsSpinnerReducer from "./setPostCommentsSpinnerReducer";
+import setPostsReducer from "./Posts/setPostsReducer";
+import setPagePostsSpinnerReducer from "./Posts/setPagePostsSpinnerReducer";
+import setCommentsReducer from "./Comments/setCommentsReducer";
+import setPageCommentsSpinnerReducer from "./Comments/setPageCommentsSpinnerReducer";
+import setCommentsInPostReducer from "./CommentsInPost/setCommentsInPostReducer";
+import setPostCommentsSpinnerReducer from "./CommentsInPost/setPostCommentsSpinnerReducer";
+import setSearchedPostsReducer from "./SearchedPosts/setSearchedPostsReducer";
+import setSearchedPostsSpinnerReducer from "./SearchedPosts/setSearchedPostsSpinnerReducer";
 
 
 const allReducers = combineReducers({
@@ -13,7 +15,9 @@ const allReducers = combineReducers({
     comments: setCommentsReducer,
     pageCommentsSpinnner: setPageCommentsSpinnerReducer,
     postComments: setCommentsInPostReducer,
-    postCommentsSpinner: setPostCommentsSpinnerReducer
+    postCommentsSpinner: setPostCommentsSpinnerReducer,
+    searchedPosts: setSearchedPostsReducer,
+    searchedPostsSpinner: setSearchedPostsSpinnerReducer
 })
 
 export default allReducers

@@ -96,3 +96,35 @@ export const postCommentsNotLoaded = () => {
         payload: true
     }
 }
+
+// searched posts
+
+export const setSearchedPosts = (posts: Array<postInterface>) => {
+    return {
+        type: 'SET_SEARCHED_POSTS',
+        payload: posts
+    }
+}
+
+export const resetSearchedPosts = () => {
+    return {
+        type: 'RESET_SEARCHED_POSTS',
+        payload: null
+    }
+}
+
+// searched posts spinner
+
+export const searchedPostsLoaded = () => {
+    return {
+        type: 'SEARCHED_POSTS_LOADED',
+        payload: false
+    }
+}
+
+export const searchedPostsNotLoaded = () => {
+    return {
+        type: 'SEARCHED_POSTS_NOT_LOADED',
+        payload: true
+    }
+}
