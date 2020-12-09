@@ -51,7 +51,7 @@ const PostSearchArea = () => {
 
     const showPagination = () => {
         if (posts !== null && posts.length > 0) {
-            return <Pagination count={10} page={page} onChange={handlePageChange} />
+            return <Pagination count={10} page={page} variant="outlined" color="secondary" onChange={handlePageChange} />
         }
     }
 

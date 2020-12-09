@@ -66,10 +66,16 @@ const fetchPostsBySearchPaginated = (
     return res.data;
 })
 
+const fetchPostsPaginated = (number: number) => axios.get(config.apiURL + "posts/page/" + number)
+    .then(res => {
+    return res.data;
+})
+
 export const PostsAPI = {
     fetchPosts: fetchPosts,
     deletePost: deletePost,
     postPost: postPost,
     updatePost: updatePost,
+    fetchPostsPaginated: fetchPostsPaginated,
     fetchPostsBySearchPaginated: fetchPostsBySearchPaginated
 };

@@ -6,6 +6,7 @@ import { rootState } from '../../Interfaces/interfaces';
 import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
 import theme from '../../theme';
 import Post from '../Post/Post';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles({
     postArea: {
@@ -33,6 +34,8 @@ const PostArea = () => {
     const [contentsValue, setContentsValue] = React.useState("");
     const [authorsValue, setAuthorsValue] = React.useState([""]);
     const [tagsValue, setTagsValue] = React.useState([""]);
+    const [page, setPage] = React.useState(1);
+    const [pageCount, setPageCount] = React.useState(60);
 
     const posts = useSelector((state: rootState) => state.posts);
     const isSpinnerVisible = useSelector((state: rootState) => state.postsSpinner)
@@ -46,6 +49,17 @@ const PostArea = () => {
             return posts.map(post => <Post key={"post" + post.id} id={post.id} authors={post.authors} tags={post.tags} contents={post.contents} />)
         }
     }
+
+    const showPagination = () => {
+        if (posts !== null && posts.length > 0) {
+            return <Pagination count={pageCount} page={page} variant="outlined" color="secondary" onChange={handlePageChange} />
+        }
+    }
+
+    const handlePageChange = (event: any, value: number) => {
+        setPage(value);
+        loadPosts(value);
+    };
 
     const handleAddPost = async () => {
         dispatch(profilePostsNotLoaded())
@@ -61,9 +75,9 @@ const PostArea = () => {
         })
     }
 
-    useEffect(() => {
+    const loadPosts = (pageNumber: number) => {
         PostsAPI
-        .fetchPosts()
+        .fetchPostsPaginated(pageNumber)
         .then((data) =>
             {
                 dispatch(setPosts(data))
@@ -74,6 +88,11 @@ const PostArea = () => {
                 dispatch(profilePostsLoaded())
             }
         })
+    }
+
+    useEffect(() => {
+        dispatch(profilePostsNotLoaded())
+        loadPosts(page)
     }, [dispatch]);
 
     const classes = useStyles();
@@ -138,6 +157,7 @@ const PostArea = () => {
             </div>
             :<Grid container justify = "center">
                 {showPosts()}
+                {showPagination()}
             </Grid>}
         </Paper>
     )
