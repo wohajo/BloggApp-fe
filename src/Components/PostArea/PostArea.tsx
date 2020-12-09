@@ -90,7 +90,18 @@ const PostArea = () => {
 
     useEffect(() => {
         dispatch(profilePostsNotLoaded())
-        loadPosts(page)
+        PostsAPI
+        .fetchPostsPaginated(page)
+        .then((data) =>
+            {
+                dispatch(setPosts(data))
+                dispatch(profilePostsLoaded())
+            })
+        .catch(err => {
+            if (err.respone === undefined) {
+                dispatch(profilePostsLoaded())
+            }
+        })
     }, [dispatch]);
 
     const classes = useStyles();

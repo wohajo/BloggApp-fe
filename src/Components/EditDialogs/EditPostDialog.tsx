@@ -9,7 +9,7 @@ import theme from '../../theme';
 import { postInterface, rootState } from '../../Interfaces/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
-import { setPosts } from '../../Redux/Actions';
+import { resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setPosts } from '../../Redux/Actions';
 
 
 const useStyles = makeStyles({
@@ -45,14 +45,17 @@ const EditPostDialog = (props: postInterface) => {
     };
 
     const handleSendEditedPost = async () => {
+        dispatch(searchedPostsNotLoaded())
+        dispatch(resetSearchedPosts())
         PostsAPI
         .updatePost({id: props.id, contents: postContentValue, authors: postAuthorValue, tags: postTagsValue})
         PostsAPI
-        .fetchPosts()
+        .fetchPostsPaginated(1)
         .then((data) => {
             dispatch(setPosts(data))
         })
         setOpen(false)
+        dispatch(searchedPostsLoaded())
     };
 
 return (
