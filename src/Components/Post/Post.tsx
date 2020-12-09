@@ -10,7 +10,7 @@ import { postInterface } from '../../Interfaces/interfaces';
 import theme from '../../theme';
 import { PostsAPI } from '../../API/PostsAPI';
 import { useDispatch } from 'react-redux';
-import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
+import { profilePostsLoaded, profilePostsNotLoaded, resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setPosts } from '../../Redux/Actions';
 import CommentsDialog from '../CommentsDialog/CommentsDialog';
 import EditPostDialog from '../EditDialogs/EditPostDialog';
 
@@ -53,6 +53,8 @@ const Post = (props: postInterface) => {
 
     const handleDelete = async () => {
         dispatch(profilePostsNotLoaded())
+        dispatch(searchedPostsNotLoaded())
+        dispatch(resetSearchedPosts())
         await PostsAPI.deletePost(props.id)
         PostsAPI
         .fetchPosts()
@@ -61,6 +63,7 @@ const Post = (props: postInterface) => {
         })
         .finally(async () => {
             await dispatch(profilePostsLoaded())
+            dispatch(searchedPostsLoaded())
         })
     }
 

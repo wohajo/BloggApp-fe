@@ -41,9 +41,7 @@ const PostArea = () => {
     const isSpinnerVisible = useSelector((state: rootState) => state.postsSpinner)
 
     const showPosts = () => {
-        if (posts === null) {
-            return <Typography className={classes.noPosts}>No connection to the server.</Typography>
-        } else if (posts.length === 0) {
+        if (posts === null || posts.length === 0) {
             return <Typography className={classes.noPosts}>No posts to show.</Typography>
         } else {
             return posts.map(post => <Post key={"post" + post.id} id={post.id} authors={post.authors} tags={post.tags} contents={post.contents} />)

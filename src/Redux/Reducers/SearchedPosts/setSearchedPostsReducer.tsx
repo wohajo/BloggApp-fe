@@ -3,7 +3,7 @@ const setSearchedPostsReducer = (state = null, action: any) => {
         case 'SET_SEARCHED_POSTS':
             return action.payload;
         case 'RESET_SEARCHED_POSTS':
-            return state;
+            return null;
         default:
             return state;
     }
