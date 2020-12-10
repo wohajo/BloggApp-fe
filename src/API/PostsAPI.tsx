@@ -1,8 +1,6 @@
 import axios from 'axios';
 import {postInterface} from '../Interfaces/interfaces'
 import config from '../appConfig.json'
-import { useDispatch } from 'react-redux';
-import { setErrors } from '../Redux/Actions';
 
 const jsonify = (post: postInterface) => {
     return JSON.stringify({

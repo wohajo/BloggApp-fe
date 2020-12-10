@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
 import { rootState } from '../../Interfaces/interfaces';
-import { profilePostsLoaded, profilePostsNotLoaded, setErrors, setPosts } from '../../Redux/Actions';
+import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
 import theme from '../../theme';
 import Post from '../Post/Post';
 import Pagination from '@material-ui/lab/Pagination';
@@ -73,7 +73,6 @@ const PostArea = () => {
         .postPost({id: "", contents: contentsValue, authors: authorsValue, tags: tagsValue})
         .then((data) => {
             if (data.status !== 201) {
-                dispatch(setErrors(data.errors))
                 data.errors.forEach((element: any) => {
                     if (element.field === "contents") {
                         setContentsValueHelper(element.defaultMessage)
@@ -88,7 +87,7 @@ const PostArea = () => {
                         setTagsValueError(true)
                     }
                     setIsErrorShown(true);
-                    setErrorMessage("There was an error updating this post. Check the errors and try again.")
+                    setErrorMessage("There was an error sending this post. Check the errors and try again.")
                 });
             } else {
                 dispatch(profilePostsNotLoaded())

@@ -6,10 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, TextField } from '@material-ui/core';
 import theme from '../../theme';
-import { commentInterface, commentInterfaceWithIsInDialog } from '../../Interfaces/interfaces';
+import { commentInterfaceWithIsInDialog } from '../../Interfaces/interfaces';
 import { useDispatch } from 'react-redux';
 import { CommentsAPI } from '../../API/CommentsAPI';
 import { setComments, setPostComments } from '../../Redux/Actions';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 const useStyles = makeStyles({
     button: {
@@ -28,6 +29,12 @@ const EditCommentDialog = (props: commentInterfaceWithIsInDialog) => {
     const [open, setOpen] = React.useState(false);
     const [commentContentsValue, setCommentContentsValue] = React.useState(props.contents);
     const [usernameValue, setUsernameValue] = React.useState(props.username);
+    const [contentsValueError, setContentsValueError] = React.useState(false);
+    const [contentsValueHelper, setContentsValueHelper] = React.useState("");
+    const [usernameValueError, setUsernameValueError] = React.useState(false);
+    const [usernameValueHelper, setUsernameValueHelper] = React.useState("");
+    const [errorMessage, setErrorMessage] = React.useState("");
+    const [isErrorShown, setIsErrorShown] = React.useState(false);
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -38,27 +45,65 @@ const EditCommentDialog = (props: commentInterfaceWithIsInDialog) => {
 
     const handleClose = () => {
         setOpen(false);
+        setIsErrorShown(false);
     };
+
+    const setErrorsInFields = (data: any) => {
+        data.errors.forEach((element: any) => {
+            if (element.field === "contents") {
+                setContentsValueHelper(element.defaultMessage)
+                setContentsValueError(true)
+            }
+            else if (element.field === "username") {
+                setUsernameValueHelper(element.defaultMessage)
+                setUsernameValueError(true)
+            }
+            setIsErrorShown(true);
+            setErrorMessage("There was an error editing this comment. Check the errors and try again.")
+        })
+    }
 
     const handleSendEditedComment = async () => {
         if (props.isInDialog) {
             CommentsAPI
             .putComentInPost({id: props.id, contents: commentContentsValue, postId: props.postId, username: usernameValue})
-            CommentsAPI
-            .fetchCommentsByPostId(props.postId)
             .then((data) => {
-                dispatch(setPostComments(data))
-            })
-            setOpen(false)
+                if (data.errors !== undefined && data.status !== 201) {
+                    setErrorsInFields(data)
+                } else {
+                    setContentsValueHelper("")
+                    setContentsValueError(false)
+                    setUsernameValueHelper("")
+                    setUsernameValueError(false)
+                    setIsErrorShown(false);
+                    CommentsAPI
+                    .fetchCommentsByPostId(props.postId)
+                    .then((data) => {
+                        dispatch(setPostComments(data))
+                    })
+                    setOpen(false)
+                    }
+                })
         } else {
             CommentsAPI
             .putComentInPost({id: props.id, contents: commentContentsValue, postId: props.postId, username: usernameValue})
-            CommentsAPI
-            .fetchCommentsByUsername(props.username)
             .then((data) => {
-                dispatch(setComments(data))
+                if (data.errors !== undefined && data.status !== 201) {
+                    setErrorsInFields(data)
+                } else {
+                    setContentsValueHelper("")
+                    setContentsValueError(false)
+                    setUsernameValueHelper("")
+                    setUsernameValueError(false)
+                    setIsErrorShown(false);
+                    CommentsAPI
+                    .fetchCommentsByUsername(props.username)
+                    .then((data) => {
+                        dispatch(setComments(data))
+                    })
+                setOpen(false)
+                }
             })
-            setOpen(false)
         }
     };
 
@@ -90,13 +135,14 @@ return (
             onChange={(e) => {
                 setCommentContentsValue(e.target.value)
             }}
+            error={contentsValueError}
+            helperText={contentsValueHelper}
         />
         <TextField
             margin="dense"
             id="comment-user-textfield"
             label="Edit user"
             type="text"
-            multiline
             rows={1}
             color="secondary"
             className={classes.commentField}
@@ -104,6 +150,8 @@ return (
             onChange={(e) => {
                 setUsernameValue(e.target.value)
             }}
+            error={usernameValueError}
+            helperText={usernameValueHelper}
         />
         <DialogActions>
             <Button onClick={handleSendEditedComment} color="primary">
@@ -113,6 +161,7 @@ return (
                 Close
             </Button>
         </DialogActions>
+    <ErrorDialog isShown={isErrorShown} message={errorMessage}/>
     </Dialog>
 </div>
 );

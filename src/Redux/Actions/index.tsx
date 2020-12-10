@@ -128,19 +128,3 @@ export const searchedPostsNotLoaded = () => {
         payload: true
     }
 }
-
-// errors
-
-export const setErrors = (errors: any) => {
-    return {
-        type: 'SET_ERRORS',
-        payload: errors
-    }
-}
-
-export const resetErrors = () => {
-    return {
-        type: 'RESET_ERRORS',
-        payload: null
-    }
-}

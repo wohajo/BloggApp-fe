@@ -1,8 +1,6 @@
 import axios from 'axios';
 import {commentInterface} from '../Interfaces/interfaces'
 import config from '../appConfig.json'
-import { setErrors } from '../Redux/Actions';
-import { useDispatch } from 'react-redux';
 
 const jsonify = (comment: commentInterface) => {
     return JSON.stringify({

@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { rootState } from '../../Interfaces/interfaces';
+import theme from '../../theme';
 
 const ErrorDialog = (props: {isShown: boolean, message: string}) => {
     const [open, setOpen] = React.useState(props.isShown);
@@ -39,7 +40,7 @@ const ErrorDialog = (props: {isShown: boolean, message: string}) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         >
-        <DialogTitle id="alert-dialog-title">{"Oops! There was an error!"}</DialogTitle>
+        <DialogTitle style={{color: theme.palette.error.main}} id="alert-dialog-title">{"Oops! There was an error!"}</DialogTitle>
         <DialogContent>
             <DialogContentText id="alert-dialog-description">
                 {props.message}

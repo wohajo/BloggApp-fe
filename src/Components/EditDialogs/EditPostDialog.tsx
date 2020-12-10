@@ -6,10 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, TextField } from '@material-ui/core';
 import theme from '../../theme';
-import { postInterface, rootState } from '../../Interfaces/interfaces';
-import { useDispatch, useSelector } from 'react-redux';
+import { postInterface } from '../../Interfaces/interfaces';
+import { useDispatch } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
-import { resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setErrors, setPosts } from '../../Redux/Actions';
+import { resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setPosts } from '../../Redux/Actions';
 import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 
