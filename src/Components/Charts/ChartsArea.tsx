@@ -1,32 +1,73 @@
 import { Grid } from '@material-ui/core';
 import React from 'react';
-import { Tooltip, BarChart, XAxis, YAxis, CartesianGrid, Bar } from 'recharts';
+import { VictoryBar, VictoryChart, VictoryAxis,
+  VictoryTheme } from 'victory';
 
 const ChartsArea = () => {
 
-    const data = [
-        {name: 'Page A', uv: 400},
-        {name: 'Page B', uv: 200},
-        {name: 'Page C', uv: 400},
-        {name: 'Page D', uv: 400}
-    ];
+  const bestUserData = [
+    {username: 1, comments: 20},
+    {username: 2, comments: 17},
+    {username: 3, comments: 14},
+    {username: 4, comments: 12}
+  ];
 
     return (
         <Grid container justify="center">
-            <BarChart width={300} height={300} data={data}>
-            <XAxis dataKey="name" stroke="#8884d8" />
-            <YAxis />
-            <Tooltip />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Bar dataKey="uv" fill="#8884d8" barSize={30} />
-        </BarChart>
-        <BarChart width={300} height={300} data={data}>
-            <XAxis dataKey="name" stroke="#8884d8" />
-            <YAxis />
-            <Tooltip />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <Bar dataKey="uv" fill="#8884d8" barSize={30} />
-        </BarChart>
+          <VictoryChart
+            theme={VictoryTheme.material}
+            domainPadding={30}
+          >
+            <VictoryAxis
+              tickValues={[1, 2, 3, 4]}
+              tickFormat={["username 1", "username 2", "username 3", "username 4"]}
+            />
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(x) => (`${x}`)}
+            />
+            <VictoryBar
+              data={bestUserData}
+              x="username"
+              y="comments"
+            />
+          </VictoryChart>
+          <VictoryChart
+            theme={VictoryTheme.material}
+            domainPadding={30}
+          >
+            <VictoryAxis
+              tickValues={[1, 2, 3, 4]}
+              tickFormat={["username 1", "username 2", "username 3", "username 4"]}
+            />
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(x) => (`${x}`)}
+            />
+            <VictoryBar
+              data={bestUserData}
+              x="username"
+              y="comments"
+            />
+          </VictoryChart>
+          <VictoryChart
+            theme={VictoryTheme.material}
+            domainPadding={30}
+          >
+            <VictoryAxis
+              tickValues={[1, 2, 3, 4]}
+              tickFormat={["username 1", "username 2", "username 3", "username 4"]}
+            />
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(x) => (`${x}`)}
+            />
+            <VictoryBar
+              data={bestUserData}
+              x="username"
+              y="comments"
+            />
+          </VictoryChart>
         </Grid>
     );
 }
