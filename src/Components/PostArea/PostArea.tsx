@@ -92,6 +92,13 @@ const PostArea = () => {
                 });
             } else {
                 dispatch(profilePostsNotLoaded())
+                setContentsValueHelper("")
+                setContentsValueError(false)
+                setAuthorsValueHelper("")
+                setAuthorsValueError(false)
+                setTagsValueHelper("")
+                setTagsValueError(false)
+                setIsErrorShown(false);
                 PostsAPI
                 .fetchPostsPaginated(1)
                 .then((data) => {

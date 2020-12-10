@@ -102,7 +102,6 @@ const PostSearchArea = () => {
                         id="authors-textfield"
                         label="Author search here!"
                         type="text"
-                        multiline
                         rows={1}
                         fullWidth
                         color="secondary"
@@ -117,7 +116,6 @@ const PostSearchArea = () => {
                         id="tags-textfield"
                         label="Tag search here!"
                         type="text"
-                        multiline
                         rows={1}
                         fullWidth
                         color="secondary"
