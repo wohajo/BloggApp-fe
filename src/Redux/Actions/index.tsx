@@ -144,3 +144,19 @@ export const resetPostsPagination = () => {
         payload: 1
     }
 }
+
+// posts pagination
+
+export const setSearchPostsPagination = (n: number) => {
+    return {
+        type: 'SET_SEARCH_POSTS_PAGINATION',
+        payload: n
+    }
+}
+
+export const resetSearchPostsPagination = () => {
+    return {
+        type: 'RESET_SEARCH_POSTS_PAGINATION',
+        payload: 1
+    }
+}

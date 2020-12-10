@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
 import { rootState } from '../../Interfaces/interfaces';
-import { searchedPostsLoaded, searchedPostsNotLoaded, setSearchedPosts } from '../../Redux/Actions';
+import { searchedPostsLoaded, searchedPostsNotLoaded, setSearchedPosts, setSearchPostsPagination } from '../../Redux/Actions';
 import theme from '../../theme';
 import Post from '../Post/Post';
 import Pagination from '@material-ui/lab/Pagination';
@@ -36,6 +36,7 @@ const PostSearchArea = () => {
     const [page, setPage] = React.useState(1);
 
     const dispatch = useDispatch();
+    const pageCount = useSelector((state: rootState) => state.searchPostPagination);
     const posts = useSelector((state: rootState) => state.searchedPosts);
     const isSpinnerVisible = useSelector((state: rootState) => state.searchedPostsSpinner)
 
@@ -49,7 +50,7 @@ const PostSearchArea = () => {
 
     const showPagination = () => {
         if (posts !== null && posts.length > 0) {
-            return <Pagination count={10} page={page} variant="outlined" color="secondary" onChange={handlePageChange} />
+            return <Pagination count={pageCount} page={page} variant="outlined" color="secondary" onChange={handlePageChange} />
         }
     }
 
@@ -62,6 +63,8 @@ const PostSearchArea = () => {
             dispatch(searchedPostsLoaded())
             console.log(data)
         })
+        PostsAPI.fetchPostsBySearchCount(authorsValue, tagValue, contentsValue)
+        .then((data) => dispatch(setSearchPostsPagination(data)))
     }
 
     const handlePageChange = (event: any, value: number) => {
@@ -125,7 +128,10 @@ const PostSearchArea = () => {
                             setTagValue(e.target.value)
                         }}
                     />
-                <Button variant="outlined" color="secondary" onClick={() => {handleSearchPosts(page)}}>Search!</Button>
+                <Button variant="outlined" color="secondary" onClick={() => {
+                    setPage(1)
+                    handleSearchPosts(1)
+                    }}>Search!</Button>
             </Grid>
             }
             {isSpinnerVisible

@@ -7,7 +7,8 @@ import setCommentsInPostReducer from "./CommentsInPost/setCommentsInPostReducer"
 import setPostCommentsSpinnerReducer from "./CommentsInPost/setPostCommentsSpinnerReducer";
 import setSearchedPostsReducer from "./SearchedPosts/setSearchedPostsReducer";
 import setSearchedPostsSpinnerReducer from "./SearchedPosts/setSearchedPostsSpinnerReducer";
-import setPostsPaginationReducer from './Pagination/PostsPaginationReducer';
+import setPostsPaginationReducer from './Pagination/setPostsPaginationReducer';
+import setSearchPostPaginationReducer from './Pagination/setSearchPostPaginationReducer';
 
 const allReducers = combineReducers({
     posts: setPostsReducer,
@@ -18,7 +19,8 @@ const allReducers = combineReducers({
     postCommentsSpinner: setPostCommentsSpinnerReducer,
     searchedPosts: setSearchedPostsReducer,
     searchedPostsSpinner: setSearchedPostsSpinnerReducer,
-    postsPagination: setPostsPaginationReducer
+    postsPagination: setPostsPaginationReducer,
+    searchPostPagination: setSearchPostPaginationReducer
 })
 
 export default allReducers

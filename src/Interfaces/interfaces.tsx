@@ -31,6 +31,7 @@ export interface rootState {
     searchedPosts: Array<postInterface>;
     searchedPostsSpinner: Boolean;
     postsPagination: number;
+    searchPostPagination: number;
 } 
 
 export interface postIdProp {

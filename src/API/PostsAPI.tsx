@@ -77,6 +77,20 @@ const fetchPostsBySearchPaginated = (
     return res.data;
 })
 
+const fetchPostsBySearchCount = (
+    givenAuthor: String, 
+    givenTag: String, 
+    givenContents: String) => axios.get(config.apiURL + "posts/find/all", {
+    params: {
+        author: givenAuthor,
+        tag: givenTag,
+        contents: givenContents
+    }
+})
+    .then(res => {
+    return res.data;
+})
+
 const fetchPostsPaginated = (number: number) => axios.get(config.apiURL + "posts/page/" + number)
     .then(res => {
     return res.data;
@@ -89,5 +103,6 @@ export const PostsAPI = {
     postPost: postPost,
     updatePost: updatePost,
     fetchPostsPaginated: fetchPostsPaginated,
-    fetchPostsBySearchPaginated: fetchPostsBySearchPaginated
+    fetchPostsBySearchPaginated: fetchPostsBySearchPaginated,
+    fetchPostsBySearchCount: fetchPostsBySearchCount
 };
