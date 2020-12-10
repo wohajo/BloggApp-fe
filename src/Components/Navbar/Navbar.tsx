@@ -146,13 +146,13 @@ const Navbar = () => {
                 </ListItemText>
             </ListItem>
             <Divider/>
-            <ListItem button key={'Stats'}>
+            <ListItem button key={'Statistics'}>
                 <ListItemIcon>
                     <BarChartIcon />
                     </ListItemIcon>
                 <ListItemText>
                     <Typography >
-                        <MaterialLink to={'/Stats'} underline="none" component={Link}>Statistics</MaterialLink>
+                        <MaterialLink to={'/Statistics'} underline="none" component={Link}>Statistics</MaterialLink>
                     </Typography>
                 </ListItemText>
             </ListItem>

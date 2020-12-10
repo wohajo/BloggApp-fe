@@ -57,7 +57,7 @@ const Post = (props: postInterface) => {
         dispatch(resetSearchedPosts())
         await PostsAPI.deletePost(props.id)
         PostsAPI
-        .fetchPosts()
+        .fetchPostsPaginated(1)
         .then((data) => {
             dispatch(setPosts(data))
         })

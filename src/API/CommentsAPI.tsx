@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {commentInterface} from '../Interfaces/interfaces'
 import config from '../appConfig.json'
+import { setErrors } from '../Redux/Actions';
+import { useDispatch } from 'react-redux';
 
 const jsonify = (comment: commentInterface) => {
     return JSON.stringify({
@@ -40,24 +42,30 @@ const fetchCommentsByUsername = (username: String) => axios.get(config.apiURL + 
 })
 
 const postComentInPost = (comment: commentInterface) => {
-    axios.post(
+    return axios.post(
         config.apiURL + "/comments", 
         jsonify(comment), 
         headerJsonConfiguration()
         )
     .then(res => {
-    return res.data;
+        return res;
+    })
+    .catch((error) => {
+        return error.response.data;
     })
 }
 
 const putComentInPost = (comment: commentInterface) => {
-    axios.put(
+    return axios.put(
         config.apiURL + "/comments", 
         jsonify(comment), 
         headerJsonConfiguration()
         )
     .then(res => {
-    return res.data;
+        return res;
+    })
+    .catch((error) => {
+        return error.response.data;
     })
 }
 

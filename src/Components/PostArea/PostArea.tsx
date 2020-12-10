@@ -1,12 +1,13 @@
-import { Button, CircularProgress, Container, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, CircularProgress, Grid, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
 import { rootState } from '../../Interfaces/interfaces';
-import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
+import { profilePostsLoaded, profilePostsNotLoaded, setErrors, setPosts } from '../../Redux/Actions';
 import theme from '../../theme';
 import Post from '../Post/Post';
 import Pagination from '@material-ui/lab/Pagination';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 const useStyles = makeStyles({
     postArea: {
@@ -34,8 +35,16 @@ const PostArea = () => {
     const [contentsValue, setContentsValue] = React.useState("");
     const [authorsValue, setAuthorsValue] = React.useState([""]);
     const [tagsValue, setTagsValue] = React.useState([""]);
+    const [contentsValueError, setContentsValueError] = React.useState(false);
+    const [contentsValueHelper, setContentsValueHelper] = React.useState("");
+    const [authorsValueError, setAuthorsValueError] = React.useState(false);
+    const [authorsValueHelper, setAuthorsValueHelper] = React.useState("");
+    const [tagsValueError, setTagsValueError] = React.useState(false);
+    const [tagsValueHelper, setTagsValueHelper] = React.useState("");
     const [page, setPage] = React.useState(1);
-    const [pageCount, setPageCount] = React.useState(60);
+    const [errorMessage, setErrorMessage] = React.useState("");
+    const [isErrorShown, setIsErrorShown] = React.useState(false);
+    const [pageCount] = React.useState(60);
 
     const posts = useSelector((state: rootState) => state.posts);
     const isSpinnerVisible = useSelector((state: rootState) => state.postsSpinner)
@@ -60,17 +69,39 @@ const PostArea = () => {
     };
 
     const handleAddPost = async () => {
-        dispatch(profilePostsNotLoaded())
         await PostsAPI
         .postPost({id: "", contents: contentsValue, authors: authorsValue, tags: tagsValue})
-        PostsAPI
-        .fetchPosts()
         .then((data) => {
-            dispatch(setPosts(data))
-        })
-        .finally(async () => {
-            await dispatch(profilePostsLoaded())
-        })
+            if (data.status !== 201) {
+                dispatch(setErrors(data.errors))
+                data.errors.forEach((element: any) => {
+                    if (element.field === "contents") {
+                        setContentsValueHelper(element.defaultMessage)
+                        setContentsValueError(true)
+                    }
+                    else if (element.field === "authors") {
+                        setAuthorsValueHelper(element.defaultMessage)
+                        setAuthorsValueError(true)
+                    }
+                    else if (element.field === "tags") {
+                        setTagsValueHelper(element.defaultMessage)
+                        setTagsValueError(true)
+                    }
+                    setIsErrorShown(true);
+                    setErrorMessage("There was an error updating this post. Check the errors and try again.")
+                });
+            } else {
+                dispatch(profilePostsNotLoaded())
+                PostsAPI
+                .fetchPostsPaginated(1)
+                .then((data) => {
+                    dispatch(setPosts(data))
+                })
+                .finally(async () => {
+                    await dispatch(profilePostsLoaded())
+                })
+                    }
+                })
     }
 
     const loadPosts = (pageNumber: number) => {
@@ -126,11 +157,13 @@ const PostArea = () => {
                         onChange={(e) => {
                             setContentsValue(e.target.value)
                         }}
+                        error={contentsValueError}
+                        helperText={contentsValueHelper}
                     />
                 <TextField
                         margin="dense"
                         id="authors-textfield"
-                        label="Authors go here!"
+                        label="Authors go here, separate them by comma!"
                         type="text"
                         multiline
                         rows={1}
@@ -141,11 +174,13 @@ const PostArea = () => {
                         onChange={(e) => {
                             setAuthorsValue(e.target.value.split(","))
                         }}
+                        error={authorsValueError}
+                        helperText={authorsValueHelper}
                     />
                 <TextField
                         margin="dense"
                         id="tags-textfield"
-                        label="Tag here!"
+                        label="Tag here, separate by comma!"
                         type="text"
                         multiline
                         rows={1}
@@ -154,8 +189,10 @@ const PostArea = () => {
                         className={classes.commentField}
                         value={tagsValue}
                         onChange={(e) => {
-                            setTagsValue(e.target.value.split(","))
+                            setTagsValue(e.target.value.replaceAll(" ", "").split(","))
                         }}
+                        error={tagsValueError}
+                        helperText={tagsValueHelper}
                     />
                 <Button variant="outlined" color="secondary" onClick={() => {handleAddPost()}}>Post!</Button>
             </Grid>
@@ -168,6 +205,7 @@ const PostArea = () => {
                 {showPosts()}
                 {showPagination()}
             </Grid>}
+            <ErrorDialog isShown={isErrorShown} message={errorMessage}/>
         </Paper>
     )
 }

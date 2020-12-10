@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {postInterface} from '../Interfaces/interfaces'
 import config from '../appConfig.json'
+import { useDispatch } from 'react-redux';
+import { setErrors } from '../Redux/Actions';
 
 const jsonify = (post: postInterface) => {
     return JSON.stringify({
@@ -19,30 +21,41 @@ const headerJsonConfiguration = () => {
     }
 }
 
-const fetchPosts = () => axios.get(config.apiURL + "/posts")
+const fetchPosts = () => axios.get(config.apiURL + "posts")
+    .then(res => {
+    return res.data;
+})
+
+const fetchPostsCount = () => axios.get(config.apiURL + "posts/pages")
     .then(res => {
     return res.data;
 })
 
 const postPost = (post: postInterface) => {
-    axios.post(
-        config.apiURL + "/posts", 
+    return axios.post(
+        config.apiURL + "posts", 
         jsonify(post), 
         headerJsonConfiguration()
         )
     .then(res => {
-    return res.data;
+        return res;
+    })
+    .catch((error) => {
+        return error.response.data;
     })
 }
 
 const updatePost = (post: postInterface) => {
-    axios.put(
-        config.apiURL + "/posts", 
+    return axios.put(
+        config.apiURL + "posts", 
         jsonify(post), 
         headerJsonConfiguration()
         )
     .then(res => {
-    return res.data;
+        return res;
+    })
+    .catch((error) => {
+        return error.response.data;
     })
 }
 
@@ -73,6 +86,7 @@ const fetchPostsPaginated = (number: number) => axios.get(config.apiURL + "posts
 
 export const PostsAPI = {
     fetchPosts: fetchPosts,
+    fetchPostsCount: fetchPostsCount,
     deletePost: deletePost,
     postPost: postPost,
     updatePost: updatePost,

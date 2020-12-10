@@ -9,7 +9,8 @@ import theme from '../../theme';
 import { postInterface, rootState } from '../../Interfaces/interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
-import { resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setPosts } from '../../Redux/Actions';
+import { resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setErrors, setPosts } from '../../Redux/Actions';
+import ErrorDialog from '../ErrorDialog/ErrorDialog';
 
 
 const useStyles = makeStyles({
@@ -32,6 +33,14 @@ const EditPostDialog = (props: postInterface) => {
     const [postContentValue, setPostContentValue] = React.useState(props.contents);
     const [postAuthorValue, setPostAuthorValue] = React.useState(props.authors);
     const [postTagsValue, setPostTagsValue] = React.useState(props.tags);
+    const [isErrorShown, setIsErrorShown] = React.useState(false);
+    const [contentsValueError, setContentsValueError] = React.useState(false);
+    const [contentsValueHelper, setContentsValueHelper] = React.useState("");
+    const [authorsValueError, setAuthorsValueError] = React.useState(false);
+    const [authorsValueHelper, setAuthorsValueHelper] = React.useState("");
+    const [tagsValueError, setTagsValueError] = React.useState(false);
+    const [tagsValueHelper, setTagsValueHelper] = React.useState("");
+    const [errorMessage, setErrorMessage] = React.useState("");
 
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -49,13 +58,35 @@ const EditPostDialog = (props: postInterface) => {
         dispatch(resetSearchedPosts())
         PostsAPI
         .updatePost({id: props.id, contents: postContentValue, authors: postAuthorValue, tags: postTagsValue})
-        PostsAPI
-        .fetchPostsPaginated(1)
         .then((data) => {
-            dispatch(setPosts(data))
+            if (data.status !== 201 && data.errors !== undefined) {
+                data.errors.forEach((element: any) => {
+                    if (element.field === "contents") {
+                        setContentsValueHelper(element.defaultMessage)
+                        setContentsValueError(true)
+                    }
+                    else if (element.field === "authors") {
+                        setAuthorsValueHelper(element.defaultMessage)
+                        setAuthorsValueError(true)
+                    }
+                    else if (element.field === "tags") {
+                        setTagsValueHelper(element.defaultMessage)
+                        setTagsValueError(true)
+                    }
+                    setIsErrorShown(true);
+                    setErrorMessage("There was an error adding post. Check the errors and try again.")
+                });
+            } else {
+                PostsAPI
+                .fetchPostsPaginated(1)
+                .then((data) => {
+                    dispatch(setPosts(data))
+                })
+                setOpen(false)
+                dispatch(searchedPostsLoaded())
+                setErrorMessage("")
+            }
         })
-        setOpen(false)
-        dispatch(searchedPostsLoaded())
     };
 
 return (
@@ -86,6 +117,8 @@ return (
             onChange={(e) => {
                 setPostAuthorValue(e.target.value.split(","))
             }}
+            error={authorsValueError}
+            helperText={authorsValueHelper}
         />
         <TextField
             margin="dense"
@@ -100,6 +133,8 @@ return (
             onChange={(e) => {
                 setPostContentValue(e.target.value)
             }}
+            error={contentsValueError}
+            helperText={contentsValueHelper}
         />
         <TextField
             margin="dense"
@@ -114,6 +149,8 @@ return (
             onChange={(e) => {
                 setPostTagsValue(e.target.value.split(','))
             }}
+            error={tagsValueError}
+            helperText={tagsValueHelper}
         />
         <DialogActions>
             <Button onClick={handleSendEditedPost} color="primary">
@@ -124,6 +161,7 @@ return (
             </Button>
         </DialogActions>
     </Dialog>
+    <ErrorDialog isShown={isErrorShown} message={errorMessage}/>
 </div>
 );
 }

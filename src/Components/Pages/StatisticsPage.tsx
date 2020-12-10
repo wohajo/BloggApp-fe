@@ -3,17 +3,16 @@ import theme from "../../theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
 import Navbar from '../Navbar/Navbar';
-import { XAxis, YAxis, Bar, BarChart, CartesianGrid, Tooltip } from 'recharts';
+import ChartsArea from '../Charts/ChartsArea';
 
-const LandingPage = () => {
-    
-
+const StatisticsPage = () => {
     return (
         <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navbar />
+        <ChartsArea />
     </ThemeProvider>
     )
 }
 
-export default LandingPage
+export default StatisticsPage
