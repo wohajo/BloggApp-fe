@@ -30,7 +30,7 @@ export interface rootState {
     postCommentsSpinner: Boolean;
     searchedPosts: Array<postInterface>;
     searchedPostsSpinner: Boolean;
-    errors: Array<any>;
+    postsPagination: number;
 } 
 
 export interface postIdProp {

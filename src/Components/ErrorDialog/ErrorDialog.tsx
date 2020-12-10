@@ -20,10 +20,6 @@ const ErrorDialog = (props: {isShown: boolean, message: string}) => {
         setOpen(false);
     };
 
-    const dispatch = useDispatch();
-    const errors = useSelector((state: rootState) => state.errors);
-
-
     useEffect(() => {
         if (props.isShown) {
             handleClickOpen()

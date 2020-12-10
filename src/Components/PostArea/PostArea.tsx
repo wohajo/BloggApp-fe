@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PostsAPI } from '../../API/PostsAPI';
 import { rootState } from '../../Interfaces/interfaces';
-import { profilePostsLoaded, profilePostsNotLoaded, setPosts } from '../../Redux/Actions';
+import { profilePostsLoaded, profilePostsNotLoaded, resetPostsPagination, setPosts, setPostsPagination } from '../../Redux/Actions';
 import theme from '../../theme';
 import Post from '../Post/Post';
 import Pagination from '@material-ui/lab/Pagination';
@@ -44,8 +44,8 @@ const PostArea = () => {
     const [page, setPage] = React.useState(1);
     const [errorMessage, setErrorMessage] = React.useState("");
     const [isErrorShown, setIsErrorShown] = React.useState(false);
-    const [pageCount] = React.useState(60);
 
+    const pageCount = useSelector((state: rootState) => state.postsPagination);
     const posts = useSelector((state: rootState) => state.posts);
     const isSpinnerVisible = useSelector((state: rootState) => state.postsSpinner)
 
@@ -99,6 +99,9 @@ const PostArea = () => {
                 setTagsValueError(false)
                 setIsErrorShown(false);
                 PostsAPI
+                .fetchPostsCount()
+                .then((data) => dispatch(setPostsPagination(data)))
+                PostsAPI
                 .fetchPostsPaginated(1)
                 .then((data) => {
                     dispatch(setPosts(data))
@@ -131,11 +134,15 @@ const PostArea = () => {
         .fetchPostsPaginated(page)
         .then((data) =>
             {
+                PostsAPI
+                .fetchPostsCount()
+                .then((data) => dispatch(setPostsPagination(data)))
                 dispatch(setPosts(data))
                 dispatch(profilePostsLoaded())
             })
         .catch(err => {
             if (err.respone === undefined) {
+                dispatch(resetPostsPagination())
                 dispatch(profilePostsLoaded())
             }
         })

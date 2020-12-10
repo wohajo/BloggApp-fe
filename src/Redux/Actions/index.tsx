@@ -128,3 +128,19 @@ export const searchedPostsNotLoaded = () => {
         payload: true
     }
 }
+
+// posts pagination
+
+export const setPostsPagination = (n: number) => {
+    return {
+        type: 'SET_POSTS_PAGINATION',
+        payload: n
+    }
+}
+
+export const resetPostsPagination = () => {
+    return {
+        type: 'RESET_POSTS_PAGINATION',
+        payload: 1
+    }
+}
