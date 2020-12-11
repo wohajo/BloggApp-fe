@@ -146,7 +146,7 @@ const PostArea = () => {
                 dispatch(profilePostsLoaded())
             }
         })
-    }, [dispatch]);
+    }, [dispatch, page]);
 
     const classes = useStyles();
 

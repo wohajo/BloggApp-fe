@@ -5,12 +5,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { commentInterface, commentInterfaceWithIsInDialog } from '../../Interfaces/interfaces';
+import { commentInterfaceWithIsInDialog } from '../../Interfaces/interfaces';
 import theme from '../../theme';
 import { useDispatch } from 'react-redux';
 import { CommentsAPI } from '../../API/CommentsAPI';
 import { pageCommentsNotLoaded, setComments, pageCommentsLoaded, postCommentsLoaded, postCommentsNotLoaded, setPostComments } from '../../Redux/Actions';
 import EditCommentDialog from '../EditDialogs/EditCommentDialog';
+import ConfirmDialog from '../Post/ConfirmDialog';
 
 const useStyles = makeStyles({
     root: {
@@ -31,22 +32,29 @@ const Post = (props: commentInterfaceWithIsInDialog) => {
     
     const classes = useStyles();
     const dispatch = useDispatch();
+    const thisComment = {
+        id: props.id,
+        username: props.username,
+        postId: props.postId,
+        contents: props.contents,
+        isInDialog: props.isInDialog,
+}
 
-    const handleDelete = async () => {
-        if (props.isInDialog) {
+    const handleDelete = async (isInDialog: Boolean, id: String, postId: String, username: String) => {
+        if (isInDialog) {
             dispatch((postCommentsNotLoaded()))
-            await CommentsAPI.deleteComent(props.id)
+            await CommentsAPI.deleteComment(id)
             CommentsAPI
-            .fetchCommentsByPostId(props.postId)
+            .fetchCommentsByPostId(postId)
             .then(async (data) => {
                 await dispatch(setPostComments(data))
                 dispatch(postCommentsLoaded())
             })
         } else {
             dispatch((pageCommentsNotLoaded()))
-            await CommentsAPI.deleteComent(props.id)
+            await CommentsAPI.deleteComment(id)
             CommentsAPI
-            .fetchCommentsByUsername(props.username)
+            .fetchCommentsByUsername(username)
             .then(async (data) => {
                 await dispatch(setComments(data))
                 dispatch(pageCommentsLoaded())
@@ -66,7 +74,7 @@ const Post = (props: commentInterfaceWithIsInDialog) => {
         </CardContent>
         <CardActions>
             <EditCommentDialog isInDialog={props.isInDialog} id={props.id} postId={props.postId} contents={props.contents} username={props.username} />
-            <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
+            <ConfirmDialog objectToPass={thisComment} onDeleteClick={handleDelete}/>
         </CardActions>
     </Card>
     );

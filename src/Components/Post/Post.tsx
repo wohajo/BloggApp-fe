@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Chip } from '@material-ui/core';
 import { postInterface } from '../../Interfaces/interfaces';
@@ -13,6 +12,8 @@ import { useDispatch } from 'react-redux';
 import { profilePostsLoaded, profilePostsNotLoaded, resetSearchedPosts, searchedPostsLoaded, searchedPostsNotLoaded, setPosts } from '../../Redux/Actions';
 import CommentsDialog from '../CommentsDialog/CommentsDialog';
 import EditPostDialog from '../EditDialogs/EditPostDialog';
+import ConfirmDialog from './ConfirmDialog';
+import { CommentsAPI } from '../../API/CommentsAPI';
 
 const useStyles = makeStyles({
     root: {
@@ -51,11 +52,12 @@ const Post = (props: postInterface) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const handleDelete = async () => {
+    const handleDelete = async (id: String) => {
         dispatch(profilePostsNotLoaded())
         dispatch(searchedPostsNotLoaded())
         dispatch(resetSearchedPosts())
-        await PostsAPI.deletePost(props.id)
+        await PostsAPI.deletePost(id)
+        CommentsAPI.deleteCommentsByPostId(id)
         PostsAPI
         .fetchPostsPaginated(1)
         .then((data) => {
@@ -83,7 +85,7 @@ const Post = (props: postInterface) => {
         <CardActions>
             <CommentsDialog postId={props.id}/>
             <EditPostDialog id={props.id} authors={props.authors} contents={props.contents} tags={props.tags}/>
-            <Button size="small" variant="contained" className={classes.dangerousButton} onClick={() => handleDelete()}>Delete</Button>
+            <ConfirmDialog postId={props.id} onDeleteClick={handleDelete}/>
         </CardActions>
     </Card>
     );

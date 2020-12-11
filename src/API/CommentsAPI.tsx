@@ -29,7 +29,7 @@ const fetchCommentByCommentId = (commentId: String) => axios.get(config.apiURL +
     return res.data;
 })
 
-const fetchCommentsByPostId = (postId: String) => axios.get(config.apiURL + "post/" + postId + "/comments")
+const fetchCommentsByPostId = (postId: String) => axios.get(config.apiURL + "posts/" + postId + "/comments")
     .then(res => {
     return res.data;
 })
@@ -67,7 +67,12 @@ const putComentInPost = (comment: commentInterface) => {
     })
 }
 
-const deleteComent = (commentId: String) => axios.delete(config.apiURL + "comments/" + commentId)
+const deleteComment = (commentId: String) => axios.delete(config.apiURL + "comments/" + commentId)
+    .then(res => {
+    return res.data;
+})
+
+const deleteCommentsByPostId = (postId: String) => axios.delete(config.apiURL + "posts/" + postId + "/comments")
     .then(res => {
     return res.data;
 })
@@ -78,6 +83,7 @@ export const CommentsAPI = {
     fetchCommentByCommentId: fetchCommentByCommentId,
     postComentInPost: postComentInPost,
     putComentInPost: putComentInPost,
-    deleteComent: deleteComent,
-    fetchCommentsByUsername: fetchCommentsByUsername
+    deleteComment: deleteComment,
+    fetchCommentsByUsername: fetchCommentsByUsername,
+    deleteCommentsByPostId: deleteCommentsByPostId
 };

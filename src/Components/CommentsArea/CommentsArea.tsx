@@ -73,6 +73,7 @@ const CommentsArea = () => {
                 id="user-textfield"
                 label="Serch comments by user"
                 type="text"
+                helperText="Case sensitive!"
                 rows={1}
                 fullWidth
                 variant="outlined"
