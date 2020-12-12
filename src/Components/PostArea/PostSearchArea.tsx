@@ -33,6 +33,7 @@ const PostSearchArea = () => {
     const [authorsValue, setAuthorsValue] = React.useState("");
     const [contentsValue, setContentsValue] = React.useState("");
     const [tagValue, setTagValue] = React.useState("");
+    const [idValue, setIdValue] = React.useState("");
     const [page, setPage] = React.useState(1);
 
     const dispatch = useDispatch();
@@ -57,13 +58,13 @@ const PostSearchArea = () => {
     const handleSearchPosts = async (pageNumber: number) => {
         dispatch(searchedPostsNotLoaded())
         PostsAPI
-        .fetchPostsBySearchPaginated(pageNumber, authorsValue, tagValue, contentsValue)
+        .fetchPostsBySearchPaginated(pageNumber, authorsValue, tagValue, contentsValue, idValue)
         .then(async (data) => {
             await dispatch(setSearchedPosts(data))
             dispatch(searchedPostsLoaded())
             console.log(data)
         })
-        PostsAPI.fetchPostsBySearchCount(authorsValue, tagValue, contentsValue)
+        PostsAPI.fetchPostsBySearchCount(authorsValue, tagValue, contentsValue, idValue)
         .then((data) => dispatch(setSearchPostsPagination(data)))
     }
 
@@ -126,6 +127,21 @@ const PostSearchArea = () => {
                         value={tagValue}
                         onChange={(e) => {
                             setTagValue(e.target.value)
+                        }}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="tags-textfield"
+                        label="ID search here!"
+                        helperText="If You fill this field the others will be ignored! Remember to type exact ID."
+                        type="text"
+                        rows={1}
+                        fullWidth
+                        color="secondary"
+                        className={classes.commentField}
+                        value={idValue}
+                        onChange={(e) => {
+                            setIdValue(e.target.value)
                         }}
                     />
                 <Button variant="outlined" color="secondary" onClick={() => {

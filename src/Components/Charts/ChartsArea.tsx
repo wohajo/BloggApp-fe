@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@material-ui/core';
 import React, { useEffect } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis } from 'victory';
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryLabel } from 'victory';
 import { StatsAPI } from '../../API/StatsAPI';
 
 
@@ -39,14 +39,19 @@ const ChartsArea = () => {
 
     return (
         <Grid container justify="center">
-          {bestUsers.length < 5
+          {bestUsers.length < 3
           ? <Typography>No connection or too few users has posted, check it later!</Typography>
           :<VictoryChart
           domainPadding={30}
         >
           <VictoryAxis
-            tickValues={[1, 2, 3, 4, 5]}
-            tickFormat={[bestUsers[0].name, bestUsers[1].name, bestUsers[2].name, bestUsers[3].name, bestUsers[4].name]}
+            tickValues={[1, 2, 3]}
+            tickFormat={[bestUsers[0].name, bestUsers[1].name, bestUsers[2].name]}
+            style={{
+              axisLabel: {fontSize: 11, padding: 30},
+              tickLabels: {fontSize: 8, padding: 5}
+            }}
+            label="Users with most comments"
           />
           <VictoryAxis
             dependentAxis
@@ -58,14 +63,19 @@ const ChartsArea = () => {
             y="value"
           />
         </VictoryChart>}
-          {longestPosts.length < 5
+          {longestPosts.length < 3
           ? <Typography>No connection or too few posts has been made, check it later!</Typography>
           :<VictoryChart
           domainPadding={30}
         >
           <VictoryAxis
-            tickValues={[1, 2, 3, 4, 5]}
-            tickFormat={[longestPosts[0].name, longestPosts[1].name, longestPosts[2].name, longestPosts[3].name, longestPosts[4].name]}
+            tickValues={[1, 2, 3]}
+            tickFormat={[longestPosts[0].name, longestPosts[1].name, longestPosts[2].name]}
+            style={{
+              axisLabel: {fontSize: 11, padding: 30},
+              tickLabels: {fontSize: 8, padding: 5}
+            }}
+            label="IDs of longest posts"
             />
           <VictoryAxis
             dependentAxis
@@ -77,14 +87,19 @@ const ChartsArea = () => {
             y="value"
           />
         </VictoryChart>}
-          {bestPosts.length < 5
+          {bestPosts.length < 3
           ?<Typography></Typography>
           :<VictoryChart
           domainPadding={30}
         >
           <VictoryAxis
-            tickValues={[1, 2, 3, 4, 5]}
-            tickFormat={[bestPosts[0].name, bestPosts[1].name, bestPosts[2].name, bestPosts[3].name, bestPosts[4].name]}
+            tickValues={[1, 2, 3]}
+            tickFormat={[bestPosts[0].name, bestPosts[1].name, bestPosts[2].name]}
+            style={{
+              axisLabel: {fontSize: 11, padding: 30},
+              tickLabels: {fontSize: 8, padding: 2}
+            }}
+            label="IDs of most commented posts"
           />
           <VictoryAxis
             dependentAxis

@@ -66,11 +66,13 @@ const fetchPostsBySearchPaginated = (
     number: number, 
     givenAuthor: String, 
     givenTag: String, 
-    givenContents: String) => axios.get(config.apiURL + "posts/find/page/" + number, {
+    givenContents: String,
+    givenId: String) => axios.get(config.apiURL + "posts/find/page/" + number, {
     params: {
         author: givenAuthor,
         tag: givenTag,
-        contents: givenContents
+        contents: givenContents,
+        id: givenId
     }
 })
     .then(res => {
@@ -80,11 +82,13 @@ const fetchPostsBySearchPaginated = (
 const fetchPostsBySearchCount = (
     givenAuthor: String, 
     givenTag: String, 
-    givenContents: String) => axios.get(config.apiURL + "posts/find/all", {
+    givenContents: String,
+    givenId: String) => axios.get(config.apiURL + "posts/find/all", {
     params: {
         author: givenAuthor,
         tag: givenTag,
-        contents: givenContents
+        contents: givenContents,
+        id: givenId
     }
 })
     .then(res => {
